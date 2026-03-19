@@ -46,6 +46,13 @@ env:
   MACOS_P12_BASE64: "${{ secrets.MACOS_P12_BASE64 }}"
   UPLOAD_ARTIFACT: "${{ inputs.upload-artifact }}"
   SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
+  RS_PUB_KEY: "${{ secrets.RS_PUB_KEY }}"
+  RENDEZVOUS_SERVER: "${{ secrets.RENDEZVOUS_SERVER }}"
+  API_SERVER: "${{ secrets.API_SERVER }}"
+  RELAY_PORT: "${{ secrets.RELAY_PORT }}"
+  RENDEZVOUS_PORT: "${{ secrets.RENDEZVOUS_PORT }}"
+  WS_RELAY_PORT: "${{ secrets.WS_RELAY_PORT }}"
+  WS_RENDEZVOUS_PORT: "${{ secrets.WS_RENDEZVOUS_PORT }}"
 
 jobs:
   generate-bridge:
