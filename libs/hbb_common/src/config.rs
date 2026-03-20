@@ -56,7 +56,11 @@ lazy_static::lazy_static! {
     static ref STATUS: RwLock<Status> = RwLock::new(Status::load());
     static ref TRUSTED_DEVICES: RwLock<(Vec<TrustedDevice>, bool)> = Default::default();
     static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
-    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
+    //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
+    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(match option_env!("RENDEZVOUS_SERVER") {
+        Some(key) if !key.is_empty() => key,
+        _ => "",
+    }.to_owned()); 
     pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
     pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk".to_owned());
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
@@ -107,12 +111,36 @@ const CHARS: &[char] = &[
 ];
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
-
-pub const RENDEZVOUS_PORT: i32 = 21116;
-pub const RELAY_PORT: i32 = 21117;
-pub const WS_RENDEZVOUS_PORT: i32 = 21118;
-pub const WS_RELAY_PORT: i32 = 21119;
+//pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+pub const PUBLIC_RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+pub const RS_PUB_KEY: &str = match option_env!("RS_PUB_KEY") {
+    Some(key) if !key.is_empty() => key,
+    _ => PUBLIC_RS_PUB_KEY,
+};
+//pub const RENDEZVOUS_PORT: i32 = 21116;
+pub const PUBLIC_RENDEZVOUS_PORT: i32 = 21116;
+pub const RENDEZVOUS_PORT: &str = match option_env!("RENDEZVOUS_PORT") {
+    Some(key) if !key.is_empty() => key,
+    _ => PUBLIC_RENDEZVOUS_PORT,
+};
+//pub const RELAY_PORT: i32 = 21117;
+pub const PUBLIC_RELAY_PORT:i32 = 21117;
+pub const RELAY_PORT: &str = match option_env!("RELAY_PORT") {
+    Some(key) if !key.is_empty() => key,
+    _ => PUBLIC_RELAY_PORT,
+};
+//pub const WS_RENDEZVOUS_PORT: i32 = 21118;
+pub const PUBLIC_WS_RENDEZVOUS_PORT: i32 = 21118;
+pub const WS_RENDEZVOUS_PORT: &str = match option_env!("WS_RENDEZVOUS_PORT") {
+    Some(key) if !key.is_empty() => key,
+    _ => PUBLIC_WS_RENDEZVOUS_PORT,
+};
+//pub const WS_RELAY_PORT: i32 = 21119;
+pub const PUBLIC_WS_RELAY_PORT:i32 = 21119;
+pub const WS_RELAY_PORT: &str = match option_env!("WS_RELAY_PORT") {
+    Some(key) if !key.is_empty() => key,
+    _ => PUBLIC_WS_RELAY_PORT,
+};
 
 macro_rules! serde_field_string {
     ($default_func:ident, $de_func:ident, $default_expr:expr) => {
