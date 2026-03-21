@@ -18,7 +18,6 @@ use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use sodiumoxide::base64;
 use sodiumoxide::crypto::sign;
-use once_cell::sync::Lazy;
 
 use crate::{
     compress::{compress, decompress},
@@ -120,33 +119,32 @@ pub const RS_PUB_KEY: &str = match option_env!("RS_PUB_KEY") {
 };
 //pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const PUBLIC_RENDEZVOUS_PORT: i32 = 21116;
-pub const RENDEZVOUS_PORT_STR: &str =
-    match option_env!("RENDEZVOUS_PORT") {
-        Some(v) => v,
-        None => "21116", // fallback
-    };
+pub fn rendezvous_port() -> i32 {
+    option_env!("RENDEZVOUS_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_RENDEZVOUS_PORT)
+}
 //pub const RELAY_PORT: i32 = 21117;
 pub const PUBLIC_RELAY_PORT:i32 = 21117;
-pub const RELAY_PORT: &str =
-    match option_env!("RELAY_PORT") {
-        Some(v) => v,
-        None => "21117", // fallback
-    };
+pub fn relay_port() -> i32 {
+    option_env!("RELAY_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_RELAY_PORT)
+}
 
 //pub const WS_RENDEZVOUS_PORT: i32 = 21118;
 pub const PUBLIC_WS_RENDEZVOUS_PORT: i32 = 21118;
-pub const WS_RENDEZVOUS_PORT: &str =
-    match option_env!("WS_RENDEZVOUS_PORT") {
-        Some(v) => v,
-        None => "21118", // fallback
-    };
-//pub const WS_RELAY_PORT: i32 = 21119;
+pub fn wsrendezvous_port() -> i32 {
+    option_env!("WS_RENDEZVOUS_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_WS_RENDEZVOUS_PORT)
+}//pub const WS_RELAY_PORT: i32 = 21119;
 pub const PUBLIC_WS_RELAY_PORT:i32 = 21119;
-pub const WS_RELAY_PORT: &str =
-    match option_env!("WS_RELAY_PORT") {
-        Some(v) => v,
-        None => "21119", // fallback
-    };
+pub fn wsrelay_port() -> i32 {
+    option_env!("WS_RELAY_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_WS_RELAY_PORT)
+}
 
 macro_rules! serde_field_string {
     ($default_func:ident, $de_func:ident, $default_expr:expr) => {
