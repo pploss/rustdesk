@@ -120,25 +120,49 @@ pub const RS_PUB_KEY: &str = match option_env!("RS_PUB_KEY") {
 //pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const PUBLIC_RENDEZVOUS_PORT: i32 = 21116;
 pub const RENDEZVOUS_PORT: i32 = match option_env!("RENDEZVOUS_PORT") {
-    Some(key) if !key.is_empty() => key,
+    Some(key) if !key.is_empty() => {
+        // 尝试将字符串解析为 i32
+        match key.parse::<i32>() {
+            Ok(parsed) => parsed,
+            Err(_) => PUBLIC_RENDEZVOUS_PORT, // 解析失败时使用默认值
+        }
+    }
     _ => PUBLIC_RENDEZVOUS_PORT,
 };
 //pub const RELAY_PORT: i32 = 21117;
 pub const PUBLIC_RELAY_PORT:i32 = 21117;
 pub const RELAY_PORT: i32 = match option_env!("RELAY_PORT") {
-    Some(key) if !key.is_empty() => key,
+    Some(key) if !key.is_empty() => {
+        // 尝试将字符串解析为 i32
+        match key.parse::<i32>() {
+            Ok(parsed) => parsed,
+            Err(_) => PUBLIC_RELAY_PORT, // 解析失败时使用默认值
+        }
+    }
     _ => PUBLIC_RELAY_PORT,
 };
 //pub const WS_RENDEZVOUS_PORT: i32 = 21118;
 pub const PUBLIC_WS_RENDEZVOUS_PORT: i32 = 21118;
 pub const WS_RENDEZVOUS_PORT: i32 = match option_env!("WS_RENDEZVOUS_PORT") {
-    Some(key) if !key.is_empty() => key,
+    Some(key) if !key.is_empty() => {
+        // 尝试将字符串解析为 i32
+        match key.parse::<i32>() {
+            Ok(parsed) => parsed,
+            Err(_) => PUBLIC_WS_RENDEZVOUS_PORT, // 解析失败时使用默认值
+        }
+    }
     _ => PUBLIC_WS_RENDEZVOUS_PORT,
 };
 //pub const WS_RELAY_PORT: i32 = 21119;
 pub const PUBLIC_WS_RELAY_PORT:i32 = 21119;
 pub const WS_RELAY_PORT: i32 = match option_env!("WS_RELAY_PORT") {
-    Some(key) if !key.is_empty() => key,
+    Some(key) if !key.is_empty() => {
+        // 尝试将字符串解析为 i32
+        match key.parse::<i32>() {
+            Ok(parsed) => parsed,
+            Err(_) => PUBLIC_WS_RELAY_PORT, // 解析失败时使用默认值
+        }
+    }
     _ => PUBLIC_WS_RELAY_PORT,
 };
 
