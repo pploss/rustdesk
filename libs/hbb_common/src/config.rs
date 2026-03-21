@@ -18,6 +18,7 @@ use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use sodiumoxide::base64;
 use sodiumoxide::crypto::sign;
+use once_cell::sync::Lazy;
 
 use crate::{
     compress::{compress, decompress},
@@ -119,52 +120,33 @@ pub const RS_PUB_KEY: &str = match option_env!("RS_PUB_KEY") {
 };
 //pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const PUBLIC_RENDEZVOUS_PORT: i32 = 21116;
-pub const RENDEZVOUS_PORT: i32 = match option_env!("RENDEZVOUS_PORT") {
-    Some(key) if !key.is_empty() => {
-        // 尝试将字符串解析为 i32
-        match key.parse::<i32>() {
-            Ok(parsed) => parsed,
-            Err(_) => PUBLIC_RENDEZVOUS_PORT, // 解析失败时使用默认值
-        }
-    }
-    _ => PUBLIC_RENDEZVOUS_PORT,
-};
+pub static RENDEZVOUS_PORT: Lazy<i32> = Lazy::new(|| {
+    option_env!("RENDEZVOUS_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_RENDEZVOUS_PORT)
+});
 //pub const RELAY_PORT: i32 = 21117;
 pub const PUBLIC_RELAY_PORT:i32 = 21117;
-pub const RELAY_PORT: i32 = match option_env!("RELAY_PORT") {
-    Some(key) if !key.is_empty() => {
-        // 尝试将字符串解析为 i32
-        match key.parse::<i32>() {
-            Ok(parsed) => parsed,
-            Err(_) => PUBLIC_RELAY_PORT, // 解析失败时使用默认值
-        }
-    }
-    _ => PUBLIC_RELAY_PORT,
-};
+pub static RELAY_PORT: Lazy<i32> = Lazy::new(|| {
+    option_env!("RELAY_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_RELAY_PORT)
+});
+
 //pub const WS_RENDEZVOUS_PORT: i32 = 21118;
 pub const PUBLIC_WS_RENDEZVOUS_PORT: i32 = 21118;
-pub const WS_RENDEZVOUS_PORT: i32 = match option_env!("WS_RENDEZVOUS_PORT") {
-    Some(key) if !key.is_empty() => {
-        // 尝试将字符串解析为 i32
-        match key.parse::<i32>() {
-            Ok(parsed) => parsed,
-            Err(_) => PUBLIC_WS_RENDEZVOUS_PORT, // 解析失败时使用默认值
-        }
-    }
-    _ => PUBLIC_WS_RENDEZVOUS_PORT,
-};
+pub static WS_RENDEZVOUS_PORT: Lazy<i32> = Lazy::new(|| {
+    option_env!("WS_RENDEZVOUS_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_WS_RENDEZVOUS_PORT)
+});
 //pub const WS_RELAY_PORT: i32 = 21119;
 pub const PUBLIC_WS_RELAY_PORT:i32 = 21119;
-pub const WS_RELAY_PORT: i32 = match option_env!("WS_RELAY_PORT") {
-    Some(key) if !key.is_empty() => {
-        // 尝试将字符串解析为 i32
-        match key.parse::<i32>() {
-            Ok(parsed) => parsed,
-            Err(_) => PUBLIC_WS_RELAY_PORT, // 解析失败时使用默认值
-        }
-    }
-    _ => PUBLIC_WS_RELAY_PORT,
-};
+pub static WS_RELAY_PORT: Lazy<i32> = Lazy::new(|| {
+    option_env!("WS_RELAY_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_WS_RELAY_PORT)
+});
 
 macro_rules! serde_field_string {
     ($default_func:ident, $de_func:ident, $default_expr:expr) => {
