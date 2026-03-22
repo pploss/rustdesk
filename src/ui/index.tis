@@ -772,7 +772,7 @@ class InstallMe: Reactor.Component {
     function render() {
         return <div .install-me>
             <span />
-           <div>{translate('YuvarY.')}</div>
+            <div>YuvarY</div>
             <div>{translate('install_tip')}</div>
             <div><button #install-me .button>{translate('Install')}</button></div>
         </div>;
