@@ -57,16 +57,58 @@ lazy_static::lazy_static! {
     static ref TRUSTED_DEVICES: RwLock<(Vec<TrustedDevice>, bool)> = Default::default();
     static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
     //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
-    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(match option_env!("RENDEZVOUS_SERVER") {
+    //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(match option_env!("RENDEZVOUS_SERVER") {
+    //    Some(key) if !key.is_empty() => key,
+    //    _ => "",
+    //}.to_owned());
+    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(
+    match option_env!("RENDEZVOUS_SERVER") {
         Some(key) if !key.is_empty() => key,
-        _ => "",
-    }.to_owned()); 
+        _ => &format!("{}:{}", RENDEZVOUS_SERVERS[0], RENDEZVOUS_PORT),
+    }.to_owned()
+);
     pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
-    pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk".to_owned());
+    pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk(YuvarY)".to_owned());
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
     static ref USER_DEFAULT_CONFIG: RwLock<(UserDefaultConfig, Instant)> = RwLock::new((UserDefaultConfig::load(), Instant::now()));
     pub static ref NEW_STORED_PEER_CONFIG: Mutex<HashSet<String>> = Default::default();
-    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    //pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        //ID服务器，该配置部分客户端生效，故弃用
+        //map.insert("custom-rendezvous-server".to_string(), "baidu.com.cn:21114".to_string());
+        let server_addr = format!("{}:{}", RENDEZVOUS_SERVERS[0], RENDEZVOUS_PORT);
+        map.insert("custom-rendezvous-server".to_string(), server_addr);
+        //中继服务器
+        //map.insert("relay-server".to_string(), "baidu.com.cn:21117".to_string());
+        let reserver_addr = format!("{}:{}", RENDEZVOUS_SERVERS[0], RELAY_PORT);
+        map.insert("relay-server".to_string(), reserver_addr);
+        //API服务器
+        //map.insert("api-server".to_string(), "http://baidu.com.cn:21114".to_string());
+        //KEY
+        //map.insert("key".to_string(), "kmVyiuofN7pwlsAoSF2AArxhgddSebUsPwGGmIvoyc=".to_string());
+        map.insert("key".to_string(), RS_PUB_KEY);
+        
+        //PIN解锁，需要配合PIN修复代码块使用
+        map.insert("unlock_pin".to_string(), "123456789".to_string());
+        //访问模式，custom：自定义，full：完全控制，view：共享屏幕
+        map.insert("access-mode".to_string(), "full".to_string());
+        //允许远程重启
+        map.insert("enable-remote-restart".to_string(), "Y".to_string());
+        //允许远程修改配置
+        map.insert("allow-remote-config-modification".to_string(), "Y".to_string());
+        //接受远程方式，password：密码，click：点击，password-click：同时使用
+        map.insert("approve-mode".to_string(), "password".to_string());
+        //密码验证方式，use-temporary-password：一次性密码，use-permanent-password：固定密码，use-both-passwords：同时使用
+        map.insert("verification-method".to_string(), "use-permanent-password".to_string());
+        //使用DirectX捕获屏幕
+        map.insert("enable-directx-capture".to_string(), "Y".to_string());
+        //预设地址簿名称
+        map.insert("preset-address-book-name".to_string(), "111".to_string());
+        //预设地址簿标签
+        map.insert("preset-address-book-tag".to_string(), "222".to_string());
+        RwLock::new(map)
+    };
     pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
