@@ -148,163 +148,41 @@ const CHARS: &[char] = &[
 ];
 
 //pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const PUBLIC_RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RENDEZVOUS_SERVERS: &[&str] = match option_env!("RENDEZVOUS_SERVER") {
-    Some(key) if !key.is_empty() => {
-        // 将环境变量按逗号分割成多个服务器
-        Box::leak(key.split(',').map(str::trim).filter(|s| !s.is_empty()).collect::<Vec<&str>>())
-    },
-    _ => PUBLIC_RENDEZVOUS_SERVERS,
-};
-
+pub const RENDEZVOUS_SERVERS: &[&str] = &["game.yuvary.com"];
 //pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
 pub const PUBLIC_RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
 pub const RS_PUB_KEY: &str = match option_env!("RS_PUB_KEY") {
     Some(key) if !key.is_empty() => key,
     _ => PUBLIC_RS_PUB_KEY,
 };
-//pub const RENDEZVOUS_PORT: i32 = 21116;
-pub const PUBLIC_RENDEZVOUS_PORT: i32 = 21116;
-//pub fn rendezvous_port() -> i32 {
-//    option_env!("RENDEZVOUS_PORT")
-//        .and_then(|v| v.parse::<i32>().ok())
-//        .unwrap_or(PUBLIC_RENDEZVOUS_PORT)
-//}
-pub const RENDEZVOUS_PORT: i32 = match option_env!("RENDEZVOUS_PORT") {
-    Some(port) if !port.is_empty() => {
-        // 手动解析数字字符串
-        let mut result = 0i32;
-        let mut negative = false;
-        let bytes = port.as_bytes();
-        let mut i = 0;
-        
-        // 处理符号
-        if bytes == b'-' {
-            negative = true;
-            i = 1;
-        } else if bytes == b'+' {
-            i = 1;
-        }
-        
-        // 解析数字
-        while i < bytes.len() {
-            if bytes[i] >= b'0' && bytes[i] <= b'9' {
-                result = result * 10 + (bytes[i] - b'0') as i32;
-            } else {
-                // 如果包含非数字字符，使用默认值
-                return PUBLIC_RENDEZVOUS_PORT;
-            }
-            i += 1;
-        }
-        
-        if negative { -result } else { result }
-    },
-    _ => PUBLIC_RENDEZVOUS_PORT,
-};
-//pub const RELAY_PORT: i32 = 21117;
-pub const PUBLIC_RELAY_PORT:i32 = 21117;
-//pub fn rendezvous_port() -> i32 {
-//    option_env!("RENDEZVOUS_PORT")
-//        .and_then(|v| v.parse::<i32>().ok())
-//        .unwrap_or(PUBLIC_RENDEZVOUS_PORT)
-//}
-pub const RELAY_PORT: i32 = match option_env!("RELAY_PORT") {
-    Some(port) if !port.is_empty() => {
-        // 手动解析数字字符串
-        let mut result = 0i32;
-        let mut negative = false;
-        let bytes = port.as_bytes();
-        let mut i = 0;
-        
-        // 处理符号
-        if bytes == b'-' {
-            negative = true;
-            i = 1;
-        } else if bytes == b'+' {
-            i = 1;
-        }
-        
-        // 解析数字
-        while i < bytes.len() {
-            if bytes[i] >= b'0' && bytes[i] <= b'9' {
-                result = result * 10 + (bytes[i] - b'0') as i32;
-            } else {
-                // 如果包含非数字字符，使用默认值
-                return RELAY_PORT;
-            }
-            i += 1;
-        }
-        
-        if negative { -result } else { result }
-    },
-    _ => RELAY_PORT,
-};
-//pub const WS_RENDEZVOUS_PORT: i32 = 21118;
-pub const PUBLIC_WS_RENDEZVOUS_PORT: i32 = 21118;
-pub const WS_RENDEZVOUS_PORT: i32 = match option_env!("WS_RENDEZVOUS_PORT") {
-    Some(port) if !port.is_empty() => {
-        // 手动解析数字字符串
-        let mut result = 0i32;
-        let mut negative = false;
-        let bytes = port.as_bytes();
-        let mut i = 0;
-        
-        // 处理符号
-        if bytes == b'-' {
-            negative = true;
-            i = 1;
-        } else if bytes == b'+' {
-            i = 1;
-        }
-        
-        // 解析数字
-        while i < bytes.len() {
-            if bytes[i] >= b'0' && bytes[i] <= b'9' {
-                result = result * 10 + (bytes[i] - b'0') as i32;
-            } else {
-                // 如果包含非数字字符，使用默认值
-                return WS_RENDEZVOUS_PORT;
-            }
-            i += 1;
-        }
-        
-        if negative { -result } else { result }
-    },
-    _ => WS_RENDEZVOUS_PORT,
-};
-//pub const WS_RELAY_PORT: i32 = 21119;
-pub const PUBLIC_WS_RELAY_PORT:i32 = 21119;
-pub const WS_RELAY_PORT: i32 = match option_env!("WS_RELAY_PORT") {
-    Some(port) if !port.is_empty() => {
-        // 手动解析数字字符串
-        let mut result = 0i32;
-        let mut negative = false;
-        let bytes = port.as_bytes();
-        let mut i = 0;
-        
-        // 处理符号
-        if bytes == b'-' {
-            negative = true;
-            i = 1;
-        } else if bytes == b'+' {
-            i = 1;
-        }
-        
-        // 解析数字
-        while i < bytes.len() {
-            if bytes[i] >= b'0' && bytes[i] <= b'9' {
-                result = result * 10 + (bytes[i] - b'0') as i32;
-            } else {
-                // 如果包含非数字字符，使用默认值
-                return WS_RELAY_PORT;
-            }
-            i += 1;
-        }
-        
-        if negative { -result } else { result }
-    },
-    _ => WS_RELAY_PORT,
-};
+pub const RENDEZVOUS_PORT: i32 = 21116;
+pub const PUBLIC_RENDEZVOUS_PORT: i32 = 11116;
+pub fn rendezvous_port() -> i32 {
+    option_env!("RENDEZVOUS_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_RENDEZVOUS_PORT)
+}
+pub const RELAY_PORT: i32 = 21117;
+pub const PUBLIC_RELAY_PORT:i32 = 11117;
+pub fn relay_port() -> i32 {
+    option_env!("RELAY_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_RELAY_PORT)
+}
+pub const WS_RENDEZVOUS_PORT: i32 = 21118;
+pub const PUBLIC_WS_RENDEZVOUS_PORT: i32 = 11118;
+pub fn wsrendezvous_port() -> i32 {
+    option_env!("WS_RENDEZVOUS_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_WS_RENDEZVOUS_PORT)
+}
+pub const WS_RELAY_PORT: i32 = 21119;
+pub const PUBLIC_WS_RELAY_PORT:i32 = 11119;
+pub fn wsrelay_port() -> i32 {
+    option_env!("WS_RELAY_PORT")
+        .and_then(|v| v.parse::<i32>().ok())
+        .unwrap_or(PUBLIC_WS_RELAY_PORT)
+}
 
 macro_rules! serde_field_string {
     ($default_func:ident, $de_func:ident, $default_expr:expr) => {
