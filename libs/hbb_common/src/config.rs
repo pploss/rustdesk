@@ -57,16 +57,11 @@ lazy_static::lazy_static! {
     static ref TRUSTED_DEVICES: RwLock<(Vec<TrustedDevice>, bool)> = Default::default();
     static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
     //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
-    //pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(match option_env!("RENDEZVOUS_SERVER") {
-    //    Some(key) if !key.is_empty() => key,
-    //    _ => "",
-    //}.to_owned());
-    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(
-    match option_env!("RENDEZVOUS_SERVER") {
+    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(match option_env!("RENDEZVOUS_SERVER") {
         Some(key) if !key.is_empty() => key,
-        _ => &format!("{}:{}", RENDEZVOUS_SERVERS[0], RENDEZVOUS_PORT),
-    }.to_owned()
-);
+        _ => "",
+    }.to_owned());
+
     pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
     pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk(YuvarY)".to_owned());
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
