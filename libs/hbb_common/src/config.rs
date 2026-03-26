@@ -87,7 +87,7 @@ lazy_static::lazy_static! {
         //map.insert("api-server".to_string(), "http://baidu.com.cn:21114".to_string());
         //KEY
         //map.insert("key".to_string(), "kmVyiuofN7pwlsAoSF2AArxhgddSebUsPwGGmIvoyc=".to_string());
-        map.insert("key".to_string(), RS_PUB_KEY);
+        map.insert("key".to_string(), RS_PUB_KEY.to_string());
         
         //PIN解锁，需要配合PIN修复代码块使用
         map.insert("unlock_pin".to_string(), "123456789".to_string());
