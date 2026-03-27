@@ -72,7 +72,8 @@ lazy_static::lazy_static! {
         let mut map = HashMap::new();
         //ID服务器，该配置部分客户端生效，故弃用
         //map.insert("custom-rendezvous-server".to_string(), "baidu.com.cn:21114".to_string());
-        let server_addr = format!("{}:{}", RENDEZVOUS_SERVERS[0], RENDEZVOUS_PORT);
+        //let server_addr = format!("{}:{}", RENDEZVOUS_SERVERS[0], RENDEZVOUS_PORT);rendezvous_port()
+        let server_addr = format!("{}:{}", RENDEZVOUS_SERVERS[0], rendezvous_port());
         map.insert("custom-rendezvous-server".to_string(), server_addr);
         //中继服务器
         //map.insert("relay-server".to_string(), "baidu.com.cn:21117".to_string());
